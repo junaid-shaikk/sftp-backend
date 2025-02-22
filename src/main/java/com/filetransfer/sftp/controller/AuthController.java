@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -71,5 +72,16 @@ public class AuthController {
             logger.error("Error during login for user {}: {}", user.getUsername(), e.getMessage(), e);
             return ResponseEntity.status(500).body("Login failed due to an internal error.");
         }
+    }
+
+    @PostMapping("/guest")
+    public ResponseEntity<String> generateGuestToken() {
+        String guestUsername = "guest-" + UUID.randomUUID().toString().substring(0, 8);
+
+        // Generate a JWT token with an expiration time (e.g., 1 hour)
+        String token = jwtUtil.generateGuestToken(guestUsername);
+        logger.info("Guest {}, logged in", guestUsername);
+
+        return ResponseEntity.ok(token);
     }
 }
