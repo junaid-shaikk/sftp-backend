@@ -1,65 +1,172 @@
-# SFTP File Transfer Application
+# 🌐 SFTP File Transfer Application
 
-This project is a secure file transfer application built using Spring Boot and SFTP (Secure File Transfer Protocol). It allows users to upload, download, and manage files securely with authentication and authorization. The application supports chunked file uploads for large files and provides a REST API for seamless integration with other systems.
+A secure file transfer application built with **Spring Boot** and **SFTP (Secure File Transfer Protocol)**.\
+It allows **authenticated users** and **guest users** to **upload, download, and manage files** securely.
 
----
+🔹 **Supports Chunked File Uploads for Large Files**\
+🔹 **Built-in JWT Authentication for Security**\
+🔹 **Role-Based Access Control (RBAC)**\
+🔹 **Database-Backed File Storage (PostgreSQL on NeonDB)**
 
-## 🚧 Project Status: Under Development 🚧
-
-**Note**: This project is still under active development and is not yet deployed. New features, improvements, and bug fixes are being added regularly. The deployment process will be documented here once the project is ready for production use. Stay tuned for updates!
-
----
-
-## Features
-
-1. **User Authentication**:
-    - JWT-based authentication for secure access.
-    - User registration and login endpoints.
-    - Password encryption using BCrypt.
-
-2. **File Management**:
-    - Upload files (supports single and chunked uploads).
-    - Download files securely.
-    - List files with pagination.
-    - Delete files.
-
-3. **Chunked Uploads**:
-    - Upload large files in smaller chunks.
-    - Merge chunks into a single file after upload.
-    - Check uploaded chunks for resumable uploads.
-
-4. **SFTP Server**:
-    - Embedded SFTP server for secure file transfers.
-    - Password-based authentication for SFTP access.
-
-5. **Database Integration**:
-    - Stores file metadata (e.g., file name, size, owner, upload time) in a database.
-    - Stores user credentials securely.
-
-6. **Error Handling**:
-    - Comprehensive error handling and logging for debugging.
-    - Graceful degradation on failures.
-
-7. **Security**:
-    - Role-based access control (RBAC).
-    - Secure file storage and retrieval.
-    - JWT token validation for API access.
+🚀 **Live Backend:** 👉 [https://sftp-deployment-sftp.onrender.com](https://sftp-deployment-sftp.onrender.com)
 
 ---
 
-## Technologies Used
+## 📌 Project Status
 
-- **Backend**: Spring Boot, Spring Security, JWT, SFTP (Apache MINA SSHD)
-- **Database**: PostgreSQL
-- **Build Tool**: Maven
-- **Logging**: SLF4J with Logback
+🚧 **Under Active Development** 🚧\
+🔹 **Current Stage:** Backend is fully functional & deployed.\
+🔹 **Next Step:** Frontend development (Angular).
+
+---
+
+## 🔥 Features
+
+### ✅ 1. User Authentication (JWT)
+
+- Secure **User Signup & Login**
+- **Guest Mode** (Use the service without an account)
+- Password encryption using **BCrypt**
+
+### 📂 2. File Management
+
+- **Upload & Download** files securely
+- **List files with pagination**
+- **Delete files (only for registered users)**
+
+### 🚀 3. Chunked Uploads (For Large Files)
+
+- Upload large files **in chunks**
+- Merge chunks after upload
+- Supports **resumable uploads**
+
+### 🔐 4. Security Features
+
+- **Role-Based Access Control (RBAC)**
+- **JWT token validation** for API access
+- **File ownership verification before deletion**
+
+### 🗄 5. Database Integration
+
+- Stores **file metadata** (file name, size, owner, upload time)
+- Uses **PostgreSQL (NeonDB)** for user & file storage
 
 ---
 
-## Owner
+## ⚙️ Technologies Used
 
-This project is maintained by **Junaid Shaik**.  
-GitHub: [https://github.com/junaid-shaikk](https://github.com/junaid-shaikk)
+| Technology                | Purpose               |
+| ------------------------- | --------------------- |
+| **Spring Boot**           | Backend API           |
+| **Spring Security + JWT** | User Authentication   |
+| **Apache MINA SSHD**      | Embedded SFTP Server  |
+| **PostgreSQL (NeonDB)**   | File Metadata Storage |
+| **Maven**                 | Build Tool            |
+| **Logback + SLF4J**       | Logging               |
 
 ---
-### Thank you for checking out my project! 🚀
+
+## 📌 Usage Guide (API Endpoints & `curl` Commands. Try these directly from postman)
+
+👉 **Base URL:** `https://sftp-deployment-sftp.onrender.com`
+
+### 1️⃣ User Signup (`/api/auth/register`)
+
+```sh
+curl -X POST https://sftp-deployment-sftp.onrender.com/api/auth/register \
+     --header "Content-Type: application/json" \
+     --data '{"username": "testuser", "password": "password123"}'
+```
+
+✅ **Response:** `"User registered successfully!"`
+
+---
+
+### 2️⃣ User Login (`/api/auth/login`)
+
+```sh
+curl -X POST https://sftp-deployment-sftp.onrender.com/api/auth/login \
+     --header "Content-Type: application/json" \
+     --data '{"username": "testuser", "password": "password123"}'
+```
+
+✅ **Response (JWT Token):**
+
+```json
+{ "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." }
+```
+
+🚨 **Save this token** – you'll need it for file uploads & downloads.
+
+---
+
+### 3️⃣ Use as Guest (No Signup/Login)
+
+```sh
+curl -X POST https://sftp-deployment-sftp.onrender.com/api/auth/guest
+```
+
+✅ **Response (Guest JWT Token):**
+
+```json
+{ "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." }
+```
+
+**Now, use this guest token to upload & download files.**
+
+---
+
+### 4️⃣ Upload a File (`/api/files/upload`)
+
+```sh
+curl -X POST https://sftp-deployment-sftp.onrender.com/api/files/upload \
+     --header "Authorization: Bearer YOUR_JWT_TOKEN" \
+     -F "file=@/path/to/video.mp4"
+```
+
+✅ **Response:** `"File uploaded successfully!"`
+
+---
+
+### 5️⃣ Download a File (`/api/files/download/{fileName}`)
+
+```sh
+curl -X GET https://sftp-deployment-sftp.onrender.com/api/files/download/video.mp4 \
+     --header "Authorization: Bearer YOUR_JWT_TOKEN" \
+     -o downloaded_video.mp4
+```
+
+✅ **File will be saved as **``**.**
+
+📝 **🔹 Note for Postman Users:**\
+Postman **doesn't support **``** like curl**. After sending the request:
+
+1. Click **"Save Response" > "Save to File"**
+2. **Manually choose the correct file format** before saving.
+
+---
+
+### 6️⃣ List Files with Pagination (`/api/files/list`)
+
+```sh
+curl -X GET "https://sftp-deployment-sftp.onrender.com/api/files/list?page=0&size=5" \
+     --header "Authorization: Bearer YOUR_JWT_TOKEN"
+```
+
+✅ **Response:**
+
+```json
+[
+  { "fileName": "video.mp4", "fileSize": 10240, "uploadedAt": "2025-02-23T12:30:00" },
+  { "fileName": "resume.pdf", "fileSize": 2048, "uploadedAt": "2025-02-23T12:35:00" }
+]
+```
+
+---
+
+## 👤 Project Owner
+
+🔹 **Maintained by:** [Junaid Shaik](https://github.com/junaid-shaikk)\
+🔹 **GitHub Repo:** [sftp-backend](https://github.com/junaid-shaikk/sftp-backend)
+
+🚀 **Thank you for checking out my project!** 🎉\
