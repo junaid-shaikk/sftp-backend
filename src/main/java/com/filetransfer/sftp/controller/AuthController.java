@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -76,24 +77,13 @@ public class AuthController {
     }
 
     @PostMapping("/guest")
-    public ResponseEntity<?> guestAccess() {
-        try {
-            logger.info("Guest access requested.");
+    public ResponseEntity<String> generateGuestToken() {
+        String guestUsername = "guest-" + UUID.randomUUID().toString().substring(0, 8);
 
-            String guestUsername = jwtUtil.generateGuestUsername();
-            String token = jwtUtil.generateToken(guestUsername);
+        // Generate a JWT token with an expiration time (e.g., 1 hour)
+        String token = jwtUtil.generateGuestToken(guestUsername);
+        logger.info("Guest {}, logged in", guestUsername);
 
-            logger.info("Guest token generated successfully: {}", guestUsername);
-
-            Map<String, String> response = new HashMap<>();
-            response.put("token", token);
-            response.put("username", guestUsername);
-
-            return ResponseEntity.ok(response);
-        } catch (Exception e) {
-            logger.error("Error generating guest token: {}", e.getMessage(), e);
-            return ResponseEntity.status(500).body("{\"error\": \"Failed to generate guest token\"}");
-        }
+        return ResponseEntity.ok(token);
     }
-
 }

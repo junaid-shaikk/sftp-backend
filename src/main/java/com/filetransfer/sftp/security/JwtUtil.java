@@ -2,12 +2,14 @@ package com.filetransfer.sftp.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
 
 import java.security.Key;
 import java.util.Base64;
 import java.util.Date;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -115,10 +117,17 @@ public class JwtUtil {
         }
     }
 
-    public String generateGuestUsername() {
-        String guestUsername = "guest-" + java.util.UUID.randomUUID().toString().substring(0, 8);
-        logger.debug("Generated guest username: {}", guestUsername);
-        return guestUsername;
-    }
+    public String generateGuestToken(String guestUsername) {
+        long expirationMillis = System.currentTimeMillis() + (1000 * 60 * 60); // 1-hour expiration
+        Date expirationDate = new Date(expirationMillis);
 
+        return Jwts.builder()
+                .claims(Map.of(
+                        "sub", guestUsername,
+                        "iat", new Date(),
+                        "exp", expirationDate
+                ))
+                .signWith(getSigningKey())
+                .compact();
+    }
 }
