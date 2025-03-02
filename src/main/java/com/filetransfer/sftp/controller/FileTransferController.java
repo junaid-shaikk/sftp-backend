@@ -37,6 +37,10 @@ public class FileTransferController {
         String username = authentication.getName();
         logger.debug("Upload request received from user: {}", username);
 
+        if (file == null || file.isEmpty()) {
+            return ResponseEntity.badRequest().body("File cannot be empty");
+        }
+
         try {
             fileStorageService.saveFile(file, username);
             logger.info("File uploaded successfully by user: {}", username);

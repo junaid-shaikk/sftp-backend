@@ -114,4 +114,11 @@ public class JwtUtil {
             return false;
         }
     }
+
+    public String generateGuestUsername() {
+        String guestUsername = "guest-" + java.util.UUID.randomUUID().toString().substring(0, 8);
+        logger.debug("Generated guest username: {}", guestUsername);
+        return guestUsername;
+    }
+
 }

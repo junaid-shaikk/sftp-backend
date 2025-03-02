@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -72,4 +74,26 @@ public class AuthController {
             return ResponseEntity.status(500).body("Login failed due to an internal error.");
         }
     }
+
+    @PostMapping("/guest")
+    public ResponseEntity<?> guestAccess() {
+        try {
+            logger.info("Guest access requested.");
+
+            String guestUsername = jwtUtil.generateGuestUsername();
+            String token = jwtUtil.generateToken(guestUsername);
+
+            logger.info("Guest token generated successfully: {}", guestUsername);
+
+            Map<String, String> response = new HashMap<>();
+            response.put("token", token);
+            response.put("username", guestUsername);
+
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            logger.error("Error generating guest token: {}", e.getMessage(), e);
+            return ResponseEntity.status(500).body("{\"error\": \"Failed to generate guest token\"}");
+        }
+    }
+
 }

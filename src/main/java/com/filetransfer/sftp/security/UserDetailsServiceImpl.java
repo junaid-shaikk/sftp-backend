@@ -27,6 +27,15 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         try {
             logger.debug("Loading user by username: {}", username);
 
+            if (username.startsWith("guest-")) {
+                logger.info("Allowing guest user: {}", username);
+                return org.springframework.security.core.userdetails.User
+                        .withUsername(username)
+                        .password("") // No password required for guests
+                        .roles("GUEST")
+                        .build();
+            }
+
             Optional<User> user = userRepository.findByUsername(username);
 
             if (user.isEmpty()) {
@@ -37,8 +46,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             logger.debug("User found: {}", username);
             return org.springframework.security.core.userdetails.User
                     .withUsername(user.get().getUsername())
-                    .password(user.get().getPassword()) // Password is already encoded in the DB
-                    .roles("USER") // Default role
+                    .password(user.get().getPassword())
+                    .roles("USER")
                     .build();
         } catch (UsernameNotFoundException e) {
             throw e;
