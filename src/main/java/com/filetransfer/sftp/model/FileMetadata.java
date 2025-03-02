@@ -6,7 +6,9 @@ import java.time.LocalDateTime;
 
 @Entity
 @Data
-@Table(name = "file_metadata")
+@Table(name = "file_metadata", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"fileName", "owner"})
+})
 public class FileMetadata {
 
     @Id
