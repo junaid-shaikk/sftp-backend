@@ -33,12 +33,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable()) // Disable CSRF for APIs
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll() // Allow login/register without authentication
-                        .requestMatchers("/api/files/upload").authenticated() // Protect file upload
-                        .requestMatchers("/api/files/upload-chunk").authenticated() // Protect chunked uploads
-                        .requestMatchers("/api/files/merge-chunks").authenticated() // Protect merging
-                        .requestMatchers("/api/files/check-chunks/**").authenticated() // Protect chunk check
-                        .requestMatchers("/api/files/download/**").authenticated() // Protect file download
-                        .requestMatchers("/api/files/delete/**").authenticated() // Protect file deletion
+                        .requestMatchers("/api/files/**").authenticated()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

@@ -33,7 +33,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 return org.springframework.security.core.userdetails.User
                         .withUsername(username)
                         .password("") // Guest users have no password
-                        .roles("GUEST") // Assign a special "GUEST" role
+                        .roles("GUEST")
                         .build();
             }
 
@@ -47,8 +47,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             logger.debug("User found: {}", username);
             return org.springframework.security.core.userdetails.User
                     .withUsername(user.get().getUsername())
-                    .password(user.get().getPassword()) // Password is already encoded in the DB
-                    .roles("USER") // Default role for registered users
+                    .password(user.get().getPassword())
+                    .roles("USER")
                     .build();
 
         } catch (UsernameNotFoundException e) {
