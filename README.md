@@ -1,7 +1,8 @@
 # 🌐 SFTP File Transfer Application
 
 A secure file transfer application built with **Spring Boot** and **SFTP (Secure File Transfer Protocol)**.\
-It allows **authenticated users** and **guest users** to **upload, download, and manage files** securely.
+It allows **authenticated users** and **guest users** to **upload, download, and manage files** securely. \
+The application supports chunked file uploads for large files and provides a REST API for seamless integration with other systems.
 
 🔹 **Supports Chunked File Uploads for Large Files**\
 🔹 **Built-in JWT Authentication for Security**\
@@ -16,7 +17,7 @@ It allows **authenticated users** and **guest users** to **upload, download, and
 
 🚧 **Under Active Development** 🚧\
 🔹 **Current Stage:** Backend is fully functional & deployed.\
-🔹 **Next Step:** Frontend development (Angular).
+🔹 **Next Step:** Frontend development (Angular). ➡️ In-progress
 
 ---
 
@@ -25,7 +26,7 @@ It allows **authenticated users** and **guest users** to **upload, download, and
 ### ✅ 1. User Authentication (JWT)
 
 - Secure **User Signup & Login**
-- **Guest Mode** (Use the service without an account)
+- **Guest Mode** (Users can access without signup securely)
 - Password encryption using **BCrypt**
 
 ### 📂 2. File Management
@@ -55,14 +56,17 @@ It allows **authenticated users** and **guest users** to **upload, download, and
 
 ## ⚙️ Technologies Used
 
-| Technology                | Purpose               |
-| ------------------------- | --------------------- |
-| **Spring Boot**           | Backend API           |
-| **Spring Security + JWT** | User Authentication   |
-| **Apache MINA SSHD**      | Embedded SFTP Server  |
-| **PostgreSQL (NeonDB)**   | File Metadata Storage |
-| **Maven**                 | Build Tool            |
-| **Logback + SLF4J**       | Logging               |
+| Technology                | Purpose                             |
+|---------------------------|-------------------------------------|
+| **Spring Boot**           | Backend API                         |
+| **Spring Security + JWT** | User Authentication                 |
+| **Apache MINA SSHD**      | Embedded SFTP Server                |
+| **PostgreSQL (NeonDB)**   | File Metadata Storage               |
+| **Maven**                 | Build Tool                          |
+| **Logback + SLF4J**       | Logging                             |
+| **Containerization**      | Docker                              |
+| **Hosting**               | Render (Backend), Neon (PostgreSQL) |
+
 
 ---
 
@@ -161,6 +165,12 @@ curl -X GET "https://sftp-deployment-sftp.onrender.com/api/files/list?page=0&siz
   { "fileName": "resume.pdf", "fileSize": 2048, "uploadedAt": "2025-02-23T12:35:00" }
 ]
 ```
+
+---
+
+## 📝 Notes
+- **Initial request may be slow due to free hosting limitations. Please be patient. This is not a project performance issue.**
+- **Postman automatically removes `-o filename` while downloading, so use the `Save Response As` option.**
 
 ---
 
