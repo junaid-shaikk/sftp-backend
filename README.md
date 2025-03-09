@@ -17,7 +17,7 @@ The application supports chunked file uploads for large files and provides a RES
 
 🚧 **Under Active Development** 🚧\
 🔹 **Current Stage:** Backend is fully functional & deployed.\
-🔹 **Next Step:** Frontend development (Angular). ➡️ In-progress
+🔹 **Next Step:** Frontend development (Angular) ➡️ In-progress
 
 ---
 
@@ -179,4 +179,4 @@ curl -X GET "https://sftp-deployment-sftp.onrender.com/api/files/list?page=0&siz
 🔹 **Maintained by:** [Junaid Shaik](https://github.com/junaid-shaikk)\
 🔹 **GitHub Repo:** [sftp-backend](https://github.com/junaid-shaikk/sftp-backend)
 
-🚀 **Thank you for checking out my project!** 🎉\
+🚀 **Thank you for checking out my project!** 🎉
